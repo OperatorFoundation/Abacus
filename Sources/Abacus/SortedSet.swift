@@ -43,16 +43,18 @@ public extension SortedSet
             else if sortingStyle == .highFirst && element > sortedElement
             {
                 sorted.insert(element, at: index)
-                break
+                return
             }
             else if sortingStyle == .lowFirst && element < sortedElement
             {
                 sorted.insert(element, at: index)
-                break
+                return
             }
         }
+        
+        sorted.append(element)
     }
-    
+        
     func remove(element: Element)
     {
         if let index = sorted.firstIndex(of: element)

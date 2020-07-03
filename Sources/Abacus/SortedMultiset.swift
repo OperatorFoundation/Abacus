@@ -7,12 +7,11 @@ public class SortedMultiset<Element> where Element: Hashable
     typealias Elements = [Element]
     
     var elementToElementIndex: [Element: ElementIndex] = [:]
-    var sortedCounts: SortedSet<Count>
-    var countToElements: [Count: Elements] = [:]
+    var countToElements: SortedDictionary<Count, Elements>
     
     public init(sortingStyle: SortingStyle)
     {
-        sortedCounts = SortedSet<Count>(sortingStyle: sortingStyle)
+        countToElements = SortedDictionary<Count, Elements>(sortingStyle: sortingStyle)
     }
 }
 
@@ -27,54 +26,66 @@ public extension SortedMultiset
             let newCount = oldCount + 1
             
             removeOldElement(element: element)
-            addNewElement(element: element, newCount: newCount)
+            addNewElement(element: element, count: newCount)
         }
         else // This is a new element.
         {
             let newCount = 1
-            addNewElement(element: element, newCount: newCount)
+            addNewElement(element: element, count: newCount)
         }
     }
     
     func removeOldElement(element: Element)
     {
-        let oldElementIndex = elementToElementIndex[element]!
-        let (oldCount, oldIndex) = oldElementIndex
+        let elementIndex = elementToElementIndex[element]!
+        let (count, index) = elementIndex
             
-        let maybeOldCountElements = countToElements[oldCount]
-        assert(maybeOldCountElements != nil)
-        var oldCountElements = maybeOldCountElements!
-        let oldElement = oldCountElements[oldIndex]
-        assert(oldElement == element)
+        let maybeElements = countToElements.get(key: count)
+        assert(maybeElements != nil)
+        var elements = maybeElements!
+        assert(element == elements[index])
         
         // This was the only element with the previous count.
-        if oldCountElements.count == 1
+        if elements.count == 1
         {
-            countToElements.removeValue(forKey: oldCount)
-            sortedCounts.remove(element: oldCount)
+            countToElements.remove(key: count)
         }
         else // There are multiple elements with the previous count.
         {
-            oldCountElements.remove(at: oldIndex)
-            countToElements[oldIndex] = oldCountElements
+            elements.remove(at: index)
+            countToElements.set(key: count, value: elements)
+            
+            for movedElement in elements[index..<elements.count]
+            {
+                let oldMovedElementIndex = elementToElementIndex[movedElement]!
+                let (movedCount, oldMovedIndex) = oldMovedElementIndex
+                let newMovedIndex = oldMovedIndex - 1
+                let newMovedElementIndex = (movedCount, newMovedIndex)
+                elementToElementIndex[movedElement] = newMovedElementIndex
+            }
         }
     }
     
-    internal func addNewElement(element: Element, newCount: Count)
+    internal func addNewElement(element: Element, count: Count)
     {
         // There are multiple elements with the new count.
-        if var newCountElements = countToElements[newCount]
+        if var elements = countToElements.get(key: count)
         {
-            let newIndex = newCountElements.count
-            newCountElements.append(element)
-            assert(newCountElements[newIndex] == element)
+            let newIndex = elements.count
+            elements.append(element)
+            assert(elements[newIndex] == element)
+            countToElements.set(key: count, value: elements)
             
-            let newElementIndex = (newCount, newIndex)
-            elementToElementIndex[element] = newElementIndex
+            let elementIndex = (count, newIndex)
+            elementToElementIndex[element] = elementIndex
         }
         else // This is the only element with the new count.
         {
-            sortedCounts.add(element: newCount)
+            let elements: [Element] = [element]
+            countToElements.set(key: count, value: elements)
+            let index = 0
+            let elementIndex = (count, index)
+            elementToElementIndex[element] = elementIndex
         }
     }
 }
@@ -85,10 +96,62 @@ public extension SortedMultiset
     {
         var result: [(Int, Element)] = []
         
-        for (count, elements) in countToElements
+        for count in countToElements.keys().array
         {
+            guard let elements = countToElements.get(key: count) else {continue}
+            
             for element in elements
             {
+                result.append((count, element))
+            }
+        }
+        
+        return result
+    }
+}
+
+public extension SortedMultiset
+{
+    func top(limit: Int) -> [(Int, Element)]
+    {
+        var result: [(Int, Element)] = []
+        
+        for count in countToElements.keys().array
+        {
+            guard let elements = countToElements.get(key: count) else {continue}
+            
+            for element in elements
+            {
+                guard result.count < limit else
+                {
+                    return result
+                }
+                
+                result.append((count, element))
+            }
+        }
+        
+        return result
+    }
+    
+    func bottom(limit: Int) -> [(Int, Element)]
+    {
+        var result: [(Int, Element)] = []
+        
+        for count in countToElements.keys().array.reversed()
+        {
+            guard let elements = countToElements.get(key: count) else {continue}
+            
+            // This is not strictly necessary, but if we don't do it users might be confused by the results.
+            let reversedElements = elements.reversed()
+            
+            for element in reversedElements
+            {
+                guard result.count < limit else
+                {
+                    return result
+                }
+                
                 result.append((count, element))
             }
         }
