@@ -26,8 +26,8 @@ final class AbacusTests: XCTestCase {
         
         let sorted = SortedSet<Int>(sortingStyle: .lowFirst)
         sorted.add(element: 1)
-        sorted.add(element: 2)
         sorted.add(element: 3)
+        sorted.add(element: 2)
         sorted.add(element: 1)
         sorted.add(element: 3)
         sorted.add(element: 2)
