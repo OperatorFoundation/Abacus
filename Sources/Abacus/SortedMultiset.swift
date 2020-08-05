@@ -108,6 +108,40 @@ public extension SortedMultiset
         
         return result
     }
+    
+    var values: [Element]
+    {
+        var result: [Element] = []
+        
+        for count in countToElements.keys().array
+        {
+            guard let elements = countToElements.get(key: count) else {continue}
+            
+            for element in elements
+            {
+                result.append(element)
+            }
+        }
+        
+        return result
+    }
+    
+    var counts: [Int]
+    {
+        var result: [Int] = []
+        
+        for count in countToElements.keys().array
+        {
+            guard let elements = countToElements.get(key: count) else {continue}
+            
+            for _ in elements
+            {
+                result.append(count)
+            }
+        }
+        
+        return result
+    }
 }
 
 public extension SortedMultiset
