@@ -141,6 +141,23 @@ final class AbacusTests: XCTestCase {
         XCTAssertTrue(compare(results: results, correct: correct))
     }
     
+    func testMultiSetExpanded()
+    {
+        let correct = [1, 1, 2, 2, 3, 3, 4]
+        let sorted = SortedMultiset<Int>(sortingStyle: .highFirst)
+        sorted.add(element: 1)
+        sorted.add(element: 2)
+        sorted.add(element: 3)
+        sorted.add(element: 1)
+        sorted.add(element: 3)
+        sorted.add(element: 2)
+        sorted.add(element: 4)
+        
+        let results = sorted.expanded
+        print(results)
+        XCTAssertEqual(correct, results)
+    }
+    
     func testMultiSetBottomShort()
     {
         let correct = [(1, 1)]

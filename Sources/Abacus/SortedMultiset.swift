@@ -2,7 +2,7 @@ typealias Count = Int
 typealias Index = Int
 typealias ElementIndex = (Count, Index)
 
-public class SortedMultiset<Element> where Element: Hashable
+public class SortedMultiset<Element> where Element: Hashable, Element: Comparable
 {
     typealias Elements = [Element]
     
@@ -142,6 +142,28 @@ public extension SortedMultiset
         
         return result
     }
+    
+    var expanded: [Element]
+    {
+        var newArray = [Element]()
+        
+        for i in 0 ..< self.array.count
+        {
+            let value = self.values[i]
+            let score = self.counts[i]
+            
+            // The score is the number of times we saw a given value
+            // Add the value to the array "score" times
+            for _ in 0..<Int(score)
+            {
+                newArray.append(value)
+            }
+        }
+        
+        newArray.sort()
+        return newArray
+    }
+
 }
 
 public extension SortedMultiset
