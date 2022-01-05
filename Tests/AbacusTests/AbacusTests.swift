@@ -202,4 +202,41 @@ final class AbacusTests: XCTestCase {
         
         return true
     }
+
+    func testPersistentSortedDictionary()
+    {
+        let correct = 0
+
+        guard let dict = PersistentSortedDictionary<String,Int>(path: "test", sortingStyle: .lowFirst) else
+        {
+            XCTFail()
+            return
+        }
+
+        dict.set(key: "a", value: correct)
+        let result = dict.get(key: "a")
+        XCTAssertEqual(result, correct)
+
+        dict.remove(key: "a")
+    }
+
+    func testPersistentSortedDictionary2()
+    {
+        let correct = 0
+
+        guard let dict = PersistentSortedDictionary<String,Int>(path: "test", sortingStyle: .lowFirst) else
+        {
+            XCTFail()
+            return
+        }
+
+        dict.set(key: "a", value: correct)
+        dict.set(key: "b", value: 1)
+
+        let result = dict.get(index: 0)
+        XCTAssertEqual(result, correct)
+
+        dict.remove(key: "a")
+        dict.remove(key: "b")
+    }
 }

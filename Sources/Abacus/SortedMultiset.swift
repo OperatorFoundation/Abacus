@@ -7,11 +7,11 @@ public class SortedMultiset<Element> where Element: Hashable, Element: Comparabl
     typealias Elements = [Element]
     
     var elementToElementIndex: [Element: ElementIndex] = [:]
-    var countToElements: SortedDictionary<Count, Elements>
+    var countToElements: SimpleSortedDictionary<Count, Elements>
     
     public init(sortingStyle: SortingStyle)
     {
-        countToElements = SortedDictionary<Count, Elements>(sortingStyle: sortingStyle)
+        countToElements = SimpleSortedDictionary<Count, Elements>(sortingStyle: sortingStyle)
     }
 }
 

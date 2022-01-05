@@ -6,40 +6,19 @@
 //
 
 import Foundation
+import AppKit
 
-public class SortedDictionary<Key,Value> where Key: Hashable, Key: Comparable
+public protocol SortedDictionary
 {
-    var dictionary: [Key: Value] = [:]
-    var sortedKeys: SortedSet<Key>
-    
-    public init(sortingStyle: SortingStyle)
-    {
-        sortedKeys = SortedSet<Key>(sortingStyle: sortingStyle)
-    }
-}
+    associatedtype Key where Key: Comparable
+    associatedtype Value
 
-public extension SortedDictionary
-{
     func set(key: Key, value: Value)
-    {
-        dictionary[key] = value
-        sortedKeys.add(element: key)
-    }
-    
     func get(key: Key) -> Value?
-    {
-        return dictionary[key]
-    }
-    
     func remove(key: Key)
-    {
-        guard dictionary[key] != nil else {return}
-        dictionary.removeValue(forKey: key)
-        sortedKeys.remove(element: key)
-    }
-    
     func keys() -> SortedSet<Key>
-    {
-        return sortedKeys
-    }
+    func set(index: Int, value: Value)
+    func get(index: Int) -> Value?
+    func remove(index: Int)
+    func values() -> [Value]
 }
