@@ -16,7 +16,7 @@ public class OrderedSet<Element> where Element: Hashable
     {
     }
 
-    func add(element: Element)
+    public func add(element: Element)
     {
         guard !self.elements.contains(element) else {return}
 
@@ -24,7 +24,7 @@ public class OrderedSet<Element> where Element: Hashable
         self.array.append(element)
     }
 
-    func remove(element: Element)
+    public func remove(element: Element)
     {
         if let index = array.firstIndex(of: element)
         {
