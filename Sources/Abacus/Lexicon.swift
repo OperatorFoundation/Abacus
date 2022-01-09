@@ -47,7 +47,7 @@ public class Lexicon<Key,Value> where Key: Hashable
         }
     }
 
-    func set(key: Key, value: Value) -> Bool
+    public func set(key: Key, value: Value) -> Bool
     {
         if self.dictionary[key] == nil
         {
@@ -61,14 +61,14 @@ public class Lexicon<Key,Value> where Key: Hashable
         }
     }
 
-    func get(key: Key) -> Value?
+    public func get(key: Key) -> Value?
     {
         guard let index = self.dictionary[key] else {return nil}
         let (_, value) = self.orderedEntries[index]
         return value
     }
 
-    func remove(key: Key) -> Bool
+    public func remove(key: Key) -> Bool
     {
         guard let index = self.dictionary[key] else {return false}
         self.dictionary.removeValue(forKey: key)
@@ -76,12 +76,12 @@ public class Lexicon<Key,Value> where Key: Hashable
         return true
     }
 
-    func keys() -> [Key]
+    public func keys() -> [Key]
     {
         return [Key](self.dictionary.keys)
     }
 
-    func set(index: Int, key: Key? = nil, value: Value) -> Bool
+    public func set(index: Int, key: Key? = nil, value: Value) -> Bool
     {
         // Check if the index is in the existing range
         guard index >= 0 && index < self.orderedEntries.count else {return false}
@@ -112,7 +112,7 @@ public class Lexicon<Key,Value> where Key: Hashable
         return true
     }
 
-    func get(index: Int) -> Value?
+    public func get(index: Int) -> Value?
     {
         guard index >= 0 && index < self.orderedEntries.count else {return nil}
 
@@ -120,7 +120,7 @@ public class Lexicon<Key,Value> where Key: Hashable
         return value
     }
 
-    func remove(index: Int) -> Bool
+    public func remove(index: Int) -> Bool
     {
         guard index >= 0 && index < self.orderedEntries.count else {return false}
         self.orderedEntries.remove(at: index)
@@ -141,7 +141,7 @@ public class Lexicon<Key,Value> where Key: Hashable
         return true
     }
 
-    func values() -> [Value]
+    public func values() -> [Value]
     {
         return self.orderedEntries.compactMap
         {
