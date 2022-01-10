@@ -31,6 +31,14 @@ public class Lexicon<Key,Value> where Key: Hashable
         }
     }
 
+    public init(elements: [(Key?, Value)])
+    {
+        for (key, value) in elements
+        {
+            let _ = self.append(key: key, value: value)
+        }
+    }
+
     public func append(key: Key? = nil, value: Value) -> Bool
     {
         if let key = key
