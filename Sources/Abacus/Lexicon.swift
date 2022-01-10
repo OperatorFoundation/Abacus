@@ -150,4 +150,9 @@ public class Lexicon<Key,Value> where Key: Hashable
             return value
         }
     }
+
+    public func elements() -> [(Key?, Value)]
+    {
+        return self.orderedEntries
+    }
 }
