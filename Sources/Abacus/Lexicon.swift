@@ -9,7 +9,7 @@ import Foundation
 
 // Lexicon is an oredered dictionary with optional keys.
 // It can be accessed by key or index.
-public class Lexicon<Key,Value> where Key: Hashable
+public class Lexicon<Key,Value> where Key: Hashable, Value: Equatable
 {
     public var count: Int
     {
@@ -162,5 +162,27 @@ public class Lexicon<Key,Value> where Key: Hashable
     public func elements() -> [(Key?, Value)]
     {
         return self.orderedEntries
+    }
+}
+
+extension Lexicon: Equatable
+{
+    public static func == (lhs: Lexicon<Key, Value>, rhs: Lexicon<Key, Value>) -> Bool
+    {
+        let lel = lhs.elements()
+        let rel = rhs.elements()
+
+        return zip(lel, rel).reduce(true)
+        {
+            (partialResult, combined) -> Bool in
+
+            guard partialResult else {return false}
+
+            let (r, l) = combined
+            let (rw, rv) = r
+            let (lw, lv) = l
+
+            return (rw == lw) && (rv == lv)
+        }
     }
 }
