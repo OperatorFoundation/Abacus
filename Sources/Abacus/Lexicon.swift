@@ -16,7 +16,7 @@ public class Lexicon<Key,Value,Head> where Key: Hashable, Value: Equatable, Head
         return self.orderedEntries.count
     }
 
-    var head: Head?
+    public var head: Head?
     var dictionary: [Key: Int] = [:]
     var orderedEntries: [(Key?, Value)] = []
 
