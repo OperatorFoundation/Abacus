@@ -16,23 +16,29 @@ public class Lexicon<Key,Value> where Key: Hashable, Value: Equatable
         return self.orderedEntries.count
     }
 
+    var head: Value?
     var dictionary: [Key: Int] = [:]
     var orderedEntries: [(Key?, Value)] = []
 
-    required public init()
+    required public init(_ head: Value? = nil)
     {
+        self.head = head
     }
 
-    public init(keys: [Key?], values: [Value])
+    public init(_ head: Value? = nil, keys: [Key?], values: [Value])
     {
+        self.head = head
+
         for (key, value) in zip(keys, values)
         {
             let _ = self.append(key: key, value: value)
         }
     }
 
-    public init(elements: [(Key?, Value)])
+    public init(_ head: Value? = nil, elements: [(Key?, Value)])
     {
+        self.head = head
+
         for (key, value) in elements
         {
             let _ = self.append(key: key, value: value)
