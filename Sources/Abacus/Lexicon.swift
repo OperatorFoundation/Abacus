@@ -9,23 +9,23 @@ import Foundation
 
 // Lexicon is an oredered dictionary with optional keys.
 // It can be accessed by key or index.
-public class Lexicon<Key,Value> where Key: Hashable, Value: Equatable
+public class Lexicon<Key,Value,Head> where Key: Hashable, Value: Equatable, Head: Equatable
 {
     public var count: Int
     {
         return self.orderedEntries.count
     }
 
-    var head: Value?
+    var head: Head?
     var dictionary: [Key: Int] = [:]
     var orderedEntries: [(Key?, Value)] = []
 
-    required public init(_ head: Value? = nil)
+    required public init(_ head: Head? = nil)
     {
         self.head = head
     }
 
-    public init(_ head: Value? = nil, keys: [Key?], values: [Value])
+    public init(_ head: Head? = nil, keys: [Key?], values: [Value])
     {
         self.head = head
 
@@ -35,7 +35,7 @@ public class Lexicon<Key,Value> where Key: Hashable, Value: Equatable
         }
     }
 
-    public init(_ head: Value? = nil, elements: [(Key?, Value)])
+    public init(_ head: Head? = nil, elements: [(Key?, Value)])
     {
         self.head = head
 
@@ -173,8 +173,13 @@ public class Lexicon<Key,Value> where Key: Hashable, Value: Equatable
 
 extension Lexicon: Equatable
 {
-    public static func == (lhs: Lexicon<Key, Value>, rhs: Lexicon<Key, Value>) -> Bool
+    public static func == (lhs: Lexicon<Key, Value, Head>, rhs: Lexicon<Key, Value, Head>) -> Bool
     {
+        if lhs.head != rhs.head
+        {
+            return false
+        }
+
         let lel = lhs.elements()
         let rel = rhs.elements()
 
