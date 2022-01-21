@@ -45,6 +45,27 @@ public class Lexicon<Key,Value,Head> where Key: Hashable, Value: Equatable, Head
         }
     }
 
+    public func merge(lexicon: Lexicon<Key,Value,Head>) throws -> Lexicon<Key,Value,Head>
+    {
+        let result = Lexicon<Key,Value,Head>(self.head, elements: self.elements())
+
+        for (maybeKey, value) in lexicon.elements()
+        {
+            if let key = maybeKey
+            {
+                guard result.get(key: key) == nil else {throw LexiconError.shadowedMerge(key)}
+
+                let _ = result.set(key: key, value: value)
+            }
+            else
+            {
+                let _ = result.append(key: nil, value: value)
+            }
+        }
+
+        return result
+    }
+
     public func append(key: Key? = nil, value: Value) -> Bool
     {
         if let key = key
@@ -196,4 +217,9 @@ extension Lexicon: Equatable
             return (rw == lw) && (rv == lv)
         }
     }
+}
+
+public enum LexiconError<Key>: Error
+{
+    case shadowedMerge(Key)
 }
