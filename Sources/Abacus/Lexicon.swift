@@ -9,8 +9,30 @@ import Foundation
 
 // Lexicon is an oredered dictionary with optional keys.
 // It can be accessed by key or index.
-public class Lexicon<Key,Value,Head> where Key: Hashable, Value: Equatable, Head: Equatable
+public class Lexicon<Key,Value,Head>: LexiconProtocol where Key: Hashable, Value: Equatable, Head: Equatable
 {
+    static public func merge<S,T>(input: S, output: inout T) throws where S: LexiconProtocol, T: LexiconProtocol, S.Key == T.Key, S.Value == T.Value, S.Head == T.Head
+    {
+        for (maybeKey, value) in input.elements()
+        {
+            if let key = maybeKey
+            {
+                guard output.get(key: key) == nil else {throw LexiconError.shadowedMerge(key)}
+
+                let _ = output.set(key: key, value: value)
+            }
+            else
+            {
+                let _ = output.append(key: nil, value: value)
+            }
+        }
+    }
+
+
+    public typealias Key = Key
+    public typealias Value = Value
+    public typealias Head = Head
+
     public var count: Int
     {
         return self.orderedEntries.count
@@ -25,7 +47,7 @@ public class Lexicon<Key,Value,Head> where Key: Hashable, Value: Equatable, Head
         self.head = head
     }
 
-    public init(_ head: Head? = nil, keys: [Key?], values: [Value])
+    required public init(_ head: Head? = nil, keys: [Key?], values: [Value])
     {
         self.head = head
 
@@ -35,7 +57,7 @@ public class Lexicon<Key,Value,Head> where Key: Hashable, Value: Equatable, Head
         }
     }
 
-    public init(_ head: Head? = nil, elements: [(Key?, Value)])
+    required public init(_ head: Head? = nil, elements: [(Key?, Value)])
     {
         self.head = head
 
@@ -43,27 +65,6 @@ public class Lexicon<Key,Value,Head> where Key: Hashable, Value: Equatable, Head
         {
             let _ = self.append(key: key, value: value)
         }
-    }
-
-    public func merge(lexicon: Lexicon<Key,Value,Head>) throws -> Lexicon<Key,Value,Head>
-    {
-        let result = Lexicon<Key,Value,Head>(self.head, elements: self.elements())
-
-        for (maybeKey, value) in lexicon.elements()
-        {
-            if let key = maybeKey
-            {
-                guard result.get(key: key) == nil else {throw LexiconError.shadowedMerge(key)}
-
-                let _ = result.set(key: key, value: value)
-            }
-            else
-            {
-                let _ = result.append(key: nil, value: value)
-            }
-        }
-
-        return result
     }
 
     public func append(key: Key? = nil, value: Value) -> Bool
