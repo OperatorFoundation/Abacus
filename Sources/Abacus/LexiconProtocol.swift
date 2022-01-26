@@ -18,9 +18,9 @@ public protocol LexiconProtocol: Equatable
     var count: Int {get}
     var head: Head? {get}
 
-    init(_ head: Head?)
-    init(_ head: Head?, keys: [Key?], values: [Value])
-    init(_ head: Head?, elements: [(Key?, Value)])
+//    init(_ head: Head?)
+//    init(_ head: Head?, keys: [Key?], values: [Value])
+//    init(_ head: Head?, elements: [(Key?, Value)])
 
     func append(key: Key?, value: Value) -> Bool
     func set(key: Key, value: Value) -> Bool
