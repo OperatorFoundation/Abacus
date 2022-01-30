@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Datable
 
 // Lexicon is an oredered dictionary with optional keys.
 // It can be accessed by key or index.
@@ -38,29 +39,38 @@ public class Lexicon<Key,Value,Head>: LexiconProtocol where Key: Hashable, Value
         return self.orderedEntries.count
     }
 
-    public var head: Head?
+    public var split: (Head?, [(Key?, Value)])
+    {
+        guard self.orderedEntries.count > 0 else {return (nil, [])}
+        let (maybeKey, value) = self.orderedEntries[0]
+        guard maybeKey != nil, let head = value as? Head else
+        {
+            return (nil, self.orderedEntries)
+        }
+
+        let rest = [(Key?, Value)](self.orderedEntries[1...])
+        return (head, rest)
+    }
+
     var dictionary: [Key: Int] = [:]
     var orderedEntries: [(Key?, Value)] = []
 
-    required public init(_ head: Head? = nil)
+    required public init()
     {
-        self.head = head
+        self.dictionary = [:]
+        self.orderedEntries = []
     }
 
-    required public init(_ head: Head? = nil, keys: [Key?], values: [Value])
+    required public init(keys: [Key?], values: [Value])
     {
-        self.head = head
-
         for (key, value) in zip(keys, values)
         {
             let _ = self.append(key: key, value: value)
         }
     }
 
-    required public init(_ head: Head? = nil, elements: [(Key?, Value)])
+    required public init(elements: [(Key?, Value)])
     {
-        self.head = head
-
         for (key, value) in elements
         {
             let _ = self.append(key: key, value: value)
@@ -197,11 +207,6 @@ extension Lexicon: Equatable
 {
     public static func == (lhs: Lexicon<Key, Value, Head>, rhs: Lexicon<Key, Value, Head>) -> Bool
     {
-        if lhs.head != rhs.head
-        {
-            return false
-        }
-
         let lel = lhs.elements()
         let rel = rhs.elements()
 
