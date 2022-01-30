@@ -29,12 +29,12 @@ extension ChainedLexicon: LexiconProtocol
     {
         return child.count + parent.count
     }
-    
-    public var head: S.Head?
+
+    public var split: (S.Head?, [(S.Key?, S.Value)])
     {
-        return child.head
+        return self.child.split
     }
-        
+
     public func append(key: S.Key?, value: S.Value) -> Bool
     {
         self.parent.append(key: key, value: value)
@@ -196,7 +196,6 @@ extension ChainedLexicon: Equatable
 {
     public static func == (lhs: ChainedLexicon<S, T>, rhs: ChainedLexicon<S, T>) -> Bool
     {
-        if lhs.head != rhs.head {return false}
         if lhs.count != rhs.count {return false}
         for ((maybeWord1, value1), (maybeWord2, value2)) in zip(lhs.elements(), lhs.elements())
         {

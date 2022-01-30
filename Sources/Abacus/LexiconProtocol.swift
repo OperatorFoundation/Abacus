@@ -16,7 +16,7 @@ public protocol LexiconProtocol: Equatable
     associatedtype Head where Head: Equatable
 
     var count: Int {get}
-    var split: (Head?, [Value]) {get}
+    var split: (Head?, [(Key?, Value)]) {get}
 
 //    init(_ head: Head?)
 //    init(_ head: Head?, keys: [Key?], values: [Value])
