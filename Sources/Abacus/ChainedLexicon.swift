@@ -30,7 +30,7 @@ extension ChainedLexicon: LexiconProtocol
         return child.count + parent.count
     }
 
-    public var split: (S.Head?, [(S.Key?, S.Value)])
+    public var split: (S.Head?, [(S.Key?, S.Value)])?
     {
         return self.child.split
     }

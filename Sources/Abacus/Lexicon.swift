@@ -39,9 +39,9 @@ public class Lexicon<Key,Value,Head>: LexiconProtocol where Key: Hashable, Value
         return self.orderedEntries.count
     }
 
-    public var split: (Head?, [(Key?, Value)])
+    public var split: (Head?, [(Key?, Value)])?
     {
-        guard self.orderedEntries.count > 0 else {return (nil, [])}
+        guard self.orderedEntries.count > 0 else {return nil}
         let (maybeKey, value) = self.orderedEntries[0]
         guard maybeKey != nil, let head = value as? Head else
         {
