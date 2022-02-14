@@ -198,6 +198,12 @@ public class Lexicon<Key,Value,Head>: LexiconProtocol where Key: Hashable, Value
     {
         return self.orderedEntries
     }
+
+    public func first() throws -> Value
+    {
+        guard let (_, result) = self.orderedEntries.first else {throw LexiconError<Key>.empty}
+        return result
+    }
 }
 
 extension Lexicon: Equatable
@@ -225,4 +231,5 @@ extension Lexicon: Equatable
 public enum LexiconError<Key>: Error
 {
     case shadowedMerge(Key)
+    case empty
 }
