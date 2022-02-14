@@ -32,4 +32,5 @@ public protocol LexiconProtocol: Equatable
     func remove(index: Int) -> Bool
     func values() -> [Value]
     func elements() -> [(Key?, Value)]
+    func first() throws -> Value
 }
