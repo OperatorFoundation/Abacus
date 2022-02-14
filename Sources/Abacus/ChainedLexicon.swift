@@ -190,6 +190,16 @@ extension ChainedLexicon: LexiconProtocol
         
         return result
     }
+
+    public func first() throws -> S.Value
+    {
+        guard let (_, result) = self.child.elements().first else
+        {
+            throw LexiconError<S.Key>.empty
+        }
+
+        return result
+    }
 }
 
 extension ChainedLexicon: Equatable
