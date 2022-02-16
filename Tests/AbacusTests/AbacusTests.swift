@@ -1,4 +1,5 @@
 import XCTest
+import Datable
 @testable import Abacus
 
 final class AbacusTests: XCTestCase {
@@ -238,5 +239,12 @@ final class AbacusTests: XCTestCase {
 
         dict.remove(key: "a")
         dict.remove(key: "b")
+    }
+    
+    func testBloomFilter() {
+        var bloomFilter = BloomFilter<Data>()
+        let testData = "test".data
+        bloomFilter.insert(testData)
+        XCTAssertTrue(bloomFilter.contains(testData))
     }
 }

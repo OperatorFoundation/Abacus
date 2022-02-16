@@ -26,7 +26,7 @@ let package = Package(
             dependencies: ["Gardener", "Datable"]),
         .testTarget(
             name: "AbacusTests",
-            dependencies: ["Abacus"]),
+            dependencies: ["Abacus", "Datable"]),
     ],
     swiftLanguageVersions: [.v5]
 )
