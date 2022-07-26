@@ -247,4 +247,28 @@ final class AbacusTests: XCTestCase {
         bloomFilter.insert(testData)
         XCTAssertTrue(bloomFilter.contains(testData))
     }
+
+    func testSequenceCounter() {
+        let counter = SequenceCounter()
+        for aOrB in [true, false]
+        {
+            for _ in 0..<100
+            {
+                let length = UInt16.random(in: 1..<1500)
+                var data = Data(repeating: 0, count: Int(length))
+                for index in 0..<data.count
+                {
+                    data[index] = UInt8.random(in: 0..<UInt8.max)
+                }
+
+                counter.add(sequence: data, aOrB: aOrB)
+            }
+        }
+
+        let results = counter.extract()
+        for result in results
+        {
+            print("\(result.id) (\(result.length)) - \(result.score)")
+        }
+    }
 }
