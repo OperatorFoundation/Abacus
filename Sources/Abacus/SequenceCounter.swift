@@ -25,7 +25,7 @@ public class PositionalSequenceCounter
     }
 }
 
-public class SequenceCounter
+public class SequenceCounter: Codable
 {
     let top = Layer()
 
@@ -60,7 +60,7 @@ public class SequenceCounter
     }
 }
 
-public class Layer
+public class Layer: Codable
 {
     static var nextId: Int = 0
     static func getNewId() -> Int
@@ -162,7 +162,7 @@ public class Layer
     }
 }
 
-public struct Coordinates: Hashable
+public struct Coordinates: Codable, Hashable
 {
     public let index: Int
     public let offset: Int
