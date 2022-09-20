@@ -61,8 +61,7 @@ public class SequenceCounter: Codable
 
     public func extractData() -> [Data]
     {
-        // FIXME
-        return []
+        return self.extract().map { $0.data }
     }
 }
 
