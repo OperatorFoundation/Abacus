@@ -78,6 +78,12 @@ public class Layer: Codable
         return self.countA - self.countB
     }
 
+    public var data: Data
+    {
+        // FIXME - implement this
+        return Data()
+    }
+
     var tracker: [UInt64] = [0, 0, 0, 0]
     var next: [Coordinates: Layer] = [:]
     var countA: Int = 0
