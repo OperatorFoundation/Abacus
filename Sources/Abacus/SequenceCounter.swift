@@ -28,6 +28,11 @@ public class PositionalSequenceCounter
         let data = prefix + sequence
         self.counter.add(sequence: data, aOrB: aOrB)
     }
+
+    public func extract() -> [(Int, Data)]
+    {
+        return []
+    }
 }
 
 public class SequenceCounter: Codable
