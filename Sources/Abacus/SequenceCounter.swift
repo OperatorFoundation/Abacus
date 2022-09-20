@@ -58,6 +58,12 @@ public class SequenceCounter: Codable
             }
         }
     }
+
+    public func extractData() -> [Data]
+    {
+        // FIXME
+        return []
+    }
 }
 
 public class Layer: Codable
