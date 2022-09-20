@@ -9,7 +9,7 @@ import Foundation
 
 import Datable
 
-public struct OffsetSequence
+public struct OffsetSequence: Codable
 {
     public let offset: Int
     public let sequence: Data
