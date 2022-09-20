@@ -17,6 +17,11 @@ public class PositionalSequenceCounter
     {
     }
 
+    public func add(sequence: Data, aOrB: Bool)
+    {
+        // FIXME
+    }
+
     public func add(position: UInt16, sequence: Data, aOrB: Bool)
     {
         let prefix = position.maybeNetworkData!
