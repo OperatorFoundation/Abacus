@@ -9,6 +9,12 @@ import Foundation
 
 import Datable
 
+public struct OffsetSequence
+{
+    public let offset: Int
+    public let sequence: Data
+}
+
 public class PositionalSequenceCounter
 {
     let counter = SequenceCounter()
@@ -29,7 +35,7 @@ public class PositionalSequenceCounter
         self.counter.add(sequence: data, aOrB: aOrB)
     }
 
-    public func extract() -> [(Int, Data)]
+    public func extract() -> [OffsetSequence]
     {
         return []
     }
@@ -170,6 +176,10 @@ public class Layer: Codable
         self.tracker[coordinates.index] |= mask
     }
 
+//    func get() -> Coordinates
+//    {
+//    }
+
 //    func clear(index: Int, offset: Int)
 //    {
 //        let mask: UInt64 = ~(1 << offset)
@@ -187,4 +197,10 @@ public struct Coordinates: Codable, Hashable
 {
     public let index: Int
     public let offset: Int
+
+    public var byte: UInt8
+    {
+        let int = (self.index * 64) + self.offset
+        return UInt8(int)
+    }
 }
