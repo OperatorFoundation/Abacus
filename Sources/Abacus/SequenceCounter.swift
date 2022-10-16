@@ -43,7 +43,7 @@ public class PositionalSequenceCounter
 
 public class SequenceCounter: Codable
 {
-    let top = Layer()
+    var top = Layer()
 
     public init()
     {
@@ -75,10 +75,15 @@ public class SequenceCounter: Codable
         }
     }
 
-    public func extractData() -> [Data]
-    {
-        return self.extract().map { $0.data }
-    }
+//    public func extractData() -> [Data]
+//    {
+//        return self.extract().flatMap
+//        {
+//            layer in
+//
+//            return layer.sequences
+//        }
+//    }
 }
 
 public class Layer: Codable
@@ -176,8 +181,36 @@ public class Layer: Codable
         self.tracker[coordinates.index] |= mask
     }
 
-//    func get() -> Coordinates
+    func getCoordinates() -> [Coordinates]
+    {
+        var results: [Coordinates] = []
+
+        for index in 0..<self.tracker.count
+        {
+            for offset in 0..<Int.bitWidth
+            {
+                let coordinates = Coordinates(index: index, offset: offset)
+                if self.get(coordinates: coordinates)
+                {
+                    results.append(coordinates)
+                }
+            }
+        }
+
+        return results
+    }
+
+//    func getSequences() -> [Data]
 //    {
+//        let coordinatesList = self.getCoordinates()
+//        return coordinatesList.map
+//        {
+//            coordinates in
+//
+//            let byte = coordinates.byte
+//            let data = Data(bytes: [byte])
+//
+//        }
 //    }
 
 //    func clear(index: Int, offset: Int)
