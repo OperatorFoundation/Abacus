@@ -71,3 +71,8 @@ public extension SortedSet
         return sorted
     }
 }
+
+extension SortedSet
+{
+    
+}

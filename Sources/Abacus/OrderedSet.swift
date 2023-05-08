@@ -49,3 +49,11 @@ public class OrderedSet<Element> where Element: Hashable
         return self.elements.contains(element)
     }
 }
+
+extension OrderedSet: Equatable
+{
+    public static func == (lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool
+    {
+        return lhs.array == rhs.array
+    }
+}
