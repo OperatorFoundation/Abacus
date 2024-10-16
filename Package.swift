@@ -7,7 +7,7 @@ let package = Package(
     name: "Abacus",
     platforms: [
         .iOS(.v16),
-        .macOS(.v13)
+        .macOS(.v14)
     ],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
