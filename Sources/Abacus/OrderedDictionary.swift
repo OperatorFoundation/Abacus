@@ -32,30 +32,30 @@ public class OrderedDictionary<Key,Value> where Key: Equatable, Key: Hashable, V
         }
     }
 
-    func set(key: Key, value: Value)
+    public func set(key: Key, value: Value)
     {
         self.dictionary[key] = value
         self.orderedKeys.add(key)
     }
 
-    func get(key: Key) -> Value?
+    public func get(key: Key) -> Value?
     {
         return self.dictionary[key]
     }
 
-    func remove(key: Key)
+    public func remove(key: Key)
     {
         guard self.orderedKeys.contains(key) else {return}
         self.dictionary.removeValue(forKey: key)
         self.orderedKeys.remove(key)
     }
 
-    func keys() -> [Key]
+    public func keys() -> [Key]
     {
         return self.orderedKeys.array
     }
 
-    func set(index: Int, value: Value) -> Bool
+    public func set(index: Int, value: Value) -> Bool
     {
         guard let key = self.orderedKeys.get(index) else {return false}
         self.dictionary[key] = value
@@ -63,13 +63,13 @@ public class OrderedDictionary<Key,Value> where Key: Equatable, Key: Hashable, V
         return true
     }
 
-    func get(index: Int) -> Value?
+    public func get(index: Int) -> Value?
     {
         guard let key = self.orderedKeys.get(index) else {return nil}
         return self.dictionary[key]
     }
 
-    func remove(index: Int) -> Bool
+    public func remove(index: Int) -> Bool
     {
         guard let key = self.orderedKeys.get(index) else {return false}
         self.dictionary.removeValue(forKey: key)
@@ -78,7 +78,7 @@ public class OrderedDictionary<Key,Value> where Key: Equatable, Key: Hashable, V
         return true
     }
 
-    func values() -> [Value]
+    public func values() -> [Value]
     {
         return self.orderedKeys.array.compactMap
         {
