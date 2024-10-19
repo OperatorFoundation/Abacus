@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class OrderedDictionary<Key,Value> where Key: Hashable
+public class OrderedDictionary<Key,Value> where Key: Equatable, Key: Hashable, Value: Equatable, Value: Hashable
 {
     public typealias Key = Key
     public typealias Value = Value
@@ -86,5 +86,38 @@ public class OrderedDictionary<Key,Value> where Key: Hashable
 
             return self.get(key: key)
         }
+    }
+}
+
+extension OrderedDictionary: Equatable
+{
+    public static func ==(lhs: OrderedDictionary, rhs: OrderedDictionary) -> Bool
+    {
+        guard lhs.orderedKeys == rhs.orderedKeys else
+        {
+            return false
+        }
+
+        for key in lhs.orderedKeys.array
+        {
+            let lvalue = lhs.dictionary[key]
+            let rvalue = rhs.dictionary[key]
+
+            guard lvalue == rvalue else
+            {
+                return false
+            }
+        }
+
+        return true
+    }
+}
+
+extension OrderedDictionary: Hashable
+{
+    public func hash(into hasher: inout Hasher)
+    {
+        hasher.combine(self.dictionary)
+        hasher.combine(self.orderedKeys)
     }
 }
