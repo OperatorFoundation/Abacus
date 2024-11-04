@@ -12,6 +12,16 @@ public class Bijection<S,T> where S: Hashable, T: Hashable
     var leftward: [T: S] = [:]
     var rightward: [S: T] = [:]
 
+    public init()
+    {
+    }
+
+    public init(leftward: [T : S], rightward: [S : T])
+    {
+        self.leftward = leftward
+        self.rightward = rightward
+    }
+
     public func set(_ s: S, _ t: T) throws
     {
         guard !rightward.keys.contains(s) else
